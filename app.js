@@ -1,46 +1,17 @@
-const connectButton = document.getElementById('connectButton');
-const disconnectButton =
-                   document.getElementById('disconnectButton');
-const colourPicker = document.getElementById('colourPicker');
-const colourButton = document.getElementById('colourButton');
-const connect = document.getElementById('connect');
-const deviceHeartbeat = document.getElementById('deviceHeartbeat');
-const primaryServiceUuid = '12345678-1234-5678-1234-56789abcdef0';
-const receiveCharUuid = '12345678-1234-5678-1234-56789abcdef1';
-const sendCharUuid = '12345678-1234-5678-1234-56789abcdef3';
-
-let device, sendCharacteristic, receiveCharacteristic;
-connectButton.onclick = async () => {
-  device = await navigator.bluetooth
-             .requestDevice({
-                filters: [{
-                  services: [primaryServiceUuid]
-                }]
-             });
-  const server = await device.gatt.connect();
-  const service =
-           await server.getPrimaryService(primaryServiceUuid);
-  receiveCharacteristic =
-           await service.getCharacteristic(receiveCharUuid);
-  sendCharacteristic =
-           await service.getCharacteristic(sendCharUuid);
-
-  device.ongattserverdisconnected = disconnect;
-  connected.style.display = 'block';
-  connectButton.style.display = 'none';
-  disconnectButton.style.display = 'initial';
-};
-
-const disconnect = () => {
-  device = null;
-  receiveCharacteristic = null;
-  sendCharacteristic = null;
-  connected.style.display = 'none';
-  connectButton.style.display = 'initial';
-  disconnectButton.style.display = 'none';
-};
-
-disconnectButton.onclick = async () => {
-  await device.gatt.disconnect();
-  disconnect();
-};
+const switcher = document.querySelector('.btn');
+switcher.addEventListener('click', function() {
+//   navigator.bluetooth.requestDevice({
+//   filters: [{
+//     name: 'ESP32NEW'
+//   }],
+//   optionalServices: ['4fafc201-1fb5-459e-8fcc-c5c9c331914b'] // Required to access service later.
+// })
+// .then(device => { /* … */ })
+// .catch(error => { console.error(error); });
+navigator.bluetooth.requestDevice({
+  acceptAllDevices: true,
+  optionalServices: ['4fafc201-1fb5-459e-8fcc-c5c9c331914b'] // Required to access service later.
+})
+.then(device => { /* … */ })
+.catch(error => { console.error(error); });
+});
